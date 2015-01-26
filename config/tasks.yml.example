@@ -1,0 +1,42 @@
+---
+# 当番一覧を全体に通知する
+all:
+  schedule:
+    trigger: interval
+    seconds: 5 
+# 当番のリスト
+# name: 当番の名前
+# head-count: 割り当てる人数
+# schedules: 通知を投げるタイミング
+#   schedule: 記述方法はapschedulerのドキュメントを参照
+#   message: 通知メッセージ
+tasks:
+  -
+    name: 燃えるゴミ
+    head-count: 2
+    schedules:
+      -
+        schedule:
+          trigger: interval
+          seconds: 5
+        message: 明日は燃えるゴミの日です。ゴミのまとめをお願いします。
+      -
+        schedule:
+          trigger: interval
+          seconds: 7
+        message: 今日は燃えるゴミの日です。ゴミ出しをお願いします。
+  -
+    name: 資源ゴミ
+    head-count: 3
+    schedules:
+      -
+        schedule:
+          trigger: interval
+          seconds: 11
+        message: 明日は資源ゴミの日です。ゴミ出しをお願いします。
+  -
+    name: 掃除機
+    head-count: 1
+  -
+    name: シュレッダー
+    head-count: 1
