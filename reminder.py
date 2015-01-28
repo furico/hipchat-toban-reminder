@@ -20,6 +20,13 @@ DEFAULT_CONFIG = {
 
 
 class HipChatRoom:
+    """HipChatに接続するクラス
+
+    :param access_token: HipChatのアスセストークン
+    :param room_id: 通知を送るHipChatのルームID
+    :param endpoint: APIのエンドポイント
+    """
+
     def __init__(self, access_token, room_id,
                  endpoint='https://api.hipchat.com'):
         url = '{0}/v2/room/{1}/notification'.format(endpoint, room_id)
@@ -30,6 +37,15 @@ class HipChatRoom:
 
     def send_notification(self, message,
                           color='yellow', notify=False, message_format='html'):
+        """ルームに通知を送る。
+        パラメータはHipChatのAPIに従う。
+        https://www.hipchat.com/docs/apiv2/method/send_room_notification
+
+        :param message: 送信するメッセージ
+        :param color: メッセージの背景色
+        :param notif: メッセージが送信されたことをユーザに通知するかどうか
+        :param message_format: HipChat内でのレンダリング方式
+        """
         body = {
             'message': message,
             'color': color,
@@ -43,6 +59,11 @@ class HipChatRoom:
 
 
 class Assignment:
+    """当番の割り当てを表すクラス
+
+    :param name: 当番のタスク名
+    """
+
     def __init__(self, name):
         self.task = name
         self.members = []
@@ -52,11 +73,13 @@ class Assignment:
 
 
 def load_yaml(yml_path):
+    """ymlファイルを読み込む。"""
     with open(yml_path) as f:
         return yaml.load(f)
 
 
 def add_atmark(name):
+    """先頭に@マークを付与する。"""
     return '@' + name
 
 
