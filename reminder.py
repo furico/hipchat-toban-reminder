@@ -1,9 +1,9 @@
-from datetime import date
-from apscheduler.schedulers.blocking import BlockingScheduler
-import yaml
-
 import json
+import yaml
+from datetime import date
 from urllib.request import Request, urlopen
+from operator import itemgetter
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 DEFAULT_CONFIG = {
     'tasks_yml': 'config/tasks.yml',
@@ -68,19 +68,22 @@ def get_all_assignment_list(
     iso_week = date.today().isocalendar()[1]
     task_list = load_yaml(tasks_yml)
     member_list = load_members_arrange(members_yml, iso_week)
+
     assignment_list = []
+    assignment_order_list = []
 
     for task in task_list['tasks']:
         assignment = Assignment(task['name'])
-        head_count = task['head-count']
-        for i in range(head_count):
-            assignment.members.append(member_list.pop(0))
         assignment_list.append(assignment)
+        assignment_order_list.extend(
+            [dict(assignment=assignment, order=o) for o in task['order']]
+        )
 
-    no_assignment = Assignment(None)
-    for member in member_list:
-        no_assignment.members.append(member)
-    assignment_list.append(no_assignment)
+    assignment_order_list = \
+        sorted(assignment_order_list, key=itemgetter('order'))
+
+    for assignment in assignment_order_list:
+        assignment['assignment'].members.append(member_list.pop(0))
 
     return assignment_list
 

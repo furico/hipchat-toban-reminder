@@ -13,7 +13,7 @@ all:
 tasks:
   -
     name: 燃えるゴミ
-    head-count: 2
+    order: [50, 90]
     schedules:
       -
         schedule:
@@ -27,7 +27,7 @@ tasks:
         message: 今日は燃えるゴミの日です。ゴミ出しをお願いします。
   -
     name: 資源ゴミ
-    head-count: 3
+    order: [30, 60, 80]
     schedules:
       -
         schedule:
@@ -36,7 +36,10 @@ tasks:
         message: 明日は資源ゴミの日です。ゴミ出しをお願いします。
   -
     name: 掃除機
-    head-count: 1
+    order: [10]
   -
     name: シュレッダー
-    head-count: 1
+    order: [20]
+  -
+    name: 当番なし
+    order: [40, 70]
