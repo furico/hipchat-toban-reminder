@@ -1,3 +1,10 @@
+"""
+HipChatRoom 当番リマインダー
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+HipChat に当番のリマインダーを通知する。
+"""
+
 import json
 import yaml
 from datetime import date
@@ -93,13 +100,10 @@ def create_all_notification_message():
 
     msg = []
 
-    msg.append('===== 今週の掃除当番 =====')
+    msg.append('===== 今週の当番 =====')
 
     for assignment in all_assignment:
-        if assignment.task is not None:
-            msg.append('--- ' + assignment.task + ' ---')
-        else:
-            msg.append('--- 当番なし ---')
+        msg.append('--- ' + assignment.task + ' ---')
 
         for member in assignment.members:
             msg.append(add_atmark(member))
