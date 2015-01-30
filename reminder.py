@@ -83,11 +83,9 @@ def add_atmark(name):
     return '@' + name
 
 
-def load_members_arrange(yml_path, iso_week):
-    member_list = load_yaml(yml_path)
-    mod = iso_week % len(member_list)
-    splited_1 = member_list[:mod]
-    splited_2 = member_list[mod:]
+def arrange_list(ls, index):
+    splited_1 = ls[:index]
+    splited_2 = ls[index:]
     return splited_2 + splited_1
 
 
@@ -95,10 +93,7 @@ def get_all_assignment_list(
         tasks_yml=DEFAULT_CONFIG['tasks_yml'],
         members_yml=DEFAULT_CONFIG['members_yml']):
 
-    iso_week = date.today().isocalendar()[1]
     task_list = load_yaml(tasks_yml)
-    member_list = load_members_arrange(members_yml, iso_week)
-
     assignment_list = []
     assignment_order_list = []
 
@@ -112,8 +107,15 @@ def get_all_assignment_list(
     assignment_order_list = \
         sorted(assignment_order_list, key=itemgetter('order'))
 
-    for assignment in assignment_order_list:
-        assignment['assignment'].members.append(member_list.pop(0))
+    iso_week = date.today().isocalendar()[1]
+    mod = iso_week % len(assignment_order_list)
+    assignment_order_list = arrange_list(assignment_order_list, mod)
+
+    member_list = load_yaml(members_yml)
+
+    for i, member in enumerate(member_list):
+        assignment = assignment_order_list[i]['assignment']
+        assignment.members.append(member)
 
     return assignment_list
 
