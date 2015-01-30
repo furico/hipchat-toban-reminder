@@ -84,6 +84,12 @@ def add_atmark(name):
 
 
 def arrange_list(ls, index):
+    """リストを並び変える。
+    indexの位置でリストを分割し、前後を入れ替える。
+
+    :param ls: list
+    :param index: 分割位置
+    """
     splited_1 = ls[:index]
     splited_2 = ls[index:]
     return splited_2 + splited_1
@@ -92,7 +98,14 @@ def arrange_list(ls, index):
 def get_all_assignment_list(
         tasks_yml=DEFAULT_CONFIG['tasks_yml'],
         members_yml=DEFAULT_CONFIG['members_yml']):
+    """当番を割り当てたリストを取得する。
+    タスクリストとメンバーリストを読み込む。
+    タスクリストのorderと現在日付が１年の何週目かに応じて、
+    それぞれのタスクにメンバーを割り当て、そのリストを返却する。
 
+    :param tasks_yml: タスク設定ファイルのパス
+    :param members_yml: メンバー設定ファイルのパス
+    """
     task_list = load_yaml(tasks_yml)
     assignment_list = []
     assignment_order_list = []
@@ -121,6 +134,7 @@ def get_all_assignment_list(
 
 
 def create_all_notification_message():
+    """全体通知用のメッセージを作成する。"""
     all_assignment = get_all_assignment_list()
 
     msg = []
@@ -139,6 +153,10 @@ def create_all_notification_message():
 
 
 def create_all_notification_job(hipchat_yml=DEFAULT_CONFIG['hipchat_yml']):
+    """全体通知用のジョブを作成する。
+
+    :param hipchat_yml: HipChat設定ファイルのパス
+    """
     def all_notification_job():
         msg = create_all_notification_message()
         hipchat_config = load_yaml(hipchat_yml)
@@ -152,6 +170,11 @@ def create_all_notification_job(hipchat_yml=DEFAULT_CONFIG['hipchat_yml']):
 
 
 def create_notification_message(name, message):
+    """個別タスク通知用のメッセージを作成する。
+
+    :param name: タスク名
+    :param message: メッセージ
+    """
     all_assignment = get_all_assignment_list()
 
     msg = []
@@ -170,6 +193,12 @@ def create_notification_message(name, message):
 
 
 def create_timed_job(name, message, hipchat_yml=DEFAULT_CONFIG['hipchat_yml']):
+    """個別タスク通知用のジョブを作成する。
+
+    :param name: タスク名
+    :param message: メッセージ
+    :param hipchat_yml: HipChat設定ファイルのパス
+    """
     hipchat_config = load_yaml(hipchat_yml)
     hipchat_room = HipChatRoom(
         hipchat_config['ACCESS_TOKEN'],
