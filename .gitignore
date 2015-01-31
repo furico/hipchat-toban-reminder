@@ -1,2 +1,6 @@
 .python-version
 __pycache__/
+
+config/hipchat.yml
+config/members.yml
+config/tasks.yml
