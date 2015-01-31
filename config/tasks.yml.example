@@ -6,7 +6,7 @@ all:
     seconds: 5 
 # 当番のリスト
 # name: 当番の名前
-# head-count: 割り当てる人数
+# order: 割り当てる順番
 # schedules: 通知を投げるタイミング
 #   schedule: 記述方法はapschedulerのドキュメントを参照
 #   message: 通知メッセージ
