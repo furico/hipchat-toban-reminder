@@ -155,9 +155,9 @@ orderは割り当ての順番であり、orderの要素数がその当番の割�
 
 orderを適度にバラけさせることで、連続で同じ当番に割当たらないようにできます。
 
-schedulesは通知を送りたい場合に必要です。schedule、messageのリストになっています。
+schedulesは当番ごとの通知を送りたい場合に必要です。schedule、messageのリストになっています。
 
-scheduleは前述と同じです。
+scheduleの記述方法は前述と同じです。
 
 messageは通知時に送るメッセージです。
 当番に割り当てられているメンバーの@mentionが付与されて通知されます。
