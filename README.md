@@ -65,3 +65,76 @@ ROOM_ID: <room_id>
 ```
 
 ### tasks.yml
+
+当番、割り当てる順番、通知メッセージについて記述します。
+
+サンプルファイルを元に解説します。
+
+```yaml
+---
+all:
+  schedule:
+    trigger: interval
+    seconds: 5
+tasks:
+  -
+    name: 燃えるゴミ
+    order: [50, 90]
+    schedules:
+      -
+        schedule:
+          trigger: interval
+          seconds: 5
+        message: 明日は燃えるゴミの日です。ゴミのまとめをお願いします。
+      -
+        schedule:
+          trigger: interval
+          seconds: 7
+        message: 今日は燃えるゴミの日です。ゴミ出しをお願いします。
+  -
+    name: 資源ゴミ
+    order: [30, 60, 80]
+    schedules:
+      -
+        schedule:
+          trigger: interval
+          seconds: 11
+        message: 明日は資源ゴミの日です。ゴミ出しをお願いします。
+  -
+    name: 掃除機
+    order: [10]
+  -
+    name: シュレッダー
+    order: [20]
+  -
+    name: 当番なし
+    order: [40, 70]
+```
+
+#### all
+
+割り当て一覧を通知します。
+
+```yaml
+all:
+  schedule:
+    trigger: interval
+    seconds: 5
+```
+
+scheduleのtriggerはAPSchedulerのtriggersです。
+
+したがって、[こちらにあるtriggers](https://apscheduler.readthedocs.org/en/latest/py-modindex.html)から選択できます。
+
+上記の例ではintervalを選択したため、[対応するパラメータ](https://apscheduler.readthedocs.org/en/latest/modules/triggers/interval.html#module-apscheduler.triggers.interval)も合わせて設定します。
+
+triggersにcronを設定した場合、対応するパラメータは[こちら](https://apscheduler.readthedocs.org/en/latest/modules/triggers/cron.html#module-apscheduler.triggers.cron)です。
+
+たとえば以下のように記述すると、毎週月曜日の午前10時に通知を送ることになります。
+
+```yaml
+schedule:
+  trigger: cron
+  day_of_week: mon
+  hour: 10
+```
