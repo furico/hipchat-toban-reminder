@@ -50,4 +50,18 @@ ROOM_ID: <room_id>
 
 ### members.yml
 
+当番を割り当てるメンバーのリストです。
+
+このリストに記述した名前で@mentionが送られます。
+
+そのため@mention name を記述してください。
+
+```yaml
+---
+# member
+- <membar1>
+- <membar2>
+- <membar3>
+```
+
 ### tasks.yml
