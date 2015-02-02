@@ -2,6 +2,8 @@
 
 当番を忘れないように、Hipchatにリマインダーを送るスクリプトです。
 
+週が変わると、設定ファイルにしたがって当番の割り当ても自動で変わります。
+
 ## 開発環境の構築
 
 Pythonのバージョンは3.4.2です。
@@ -137,4 +139,56 @@ schedule:
   trigger: cron
   day_of_week: mon
   hour: 10
+```
+
+#### tasks
+
+tasksは当番のリストです。name、order、schedulesのリストになっています。
+
+nameは当番の名前です。
+
+orderは割り当ての順番であり、orderの要素数がその当番の割り当て人数です。
+
+そのため、各taskのorderの要素数の合計がmembers.ymlの要素数と同じになる必要があります。
+
+サンプルではorderの要素数の合計は9であるため、members.ymlも9でなければなりません。
+
+orderを適度にバラけさせることで、連続で同じ当番に割当たらないようにできます。
+
+schedulesは通知を送りたい場合に必要です。schedule、messageのリストになっています。
+
+scheduleは前述と同じです。
+
+messageは通知時に送るメッセージです。
+このメッセージに割り当てられているメンバーの@mentionが付与されて通知されます。
+
+例えば以下のように記述すると、燃えるゴミに関する通知が水曜日の17時30分と木曜日の10時30分に送られます。
+
+```yaml
+name: 燃えるゴミ
+order: [50, 90]
+schedules:
+  -
+    schedule:
+      trigger: cron
+      day_of_week: wed
+      hour: 17
+      minute: 30
+    message: 明日は燃えるゴミの日です。ゴミのまとめをお願いします。
+  -
+    schedule:
+      trigger: cron
+      day_of_week: thu
+      hour: 10
+      minute: 30
+    message: 今日は燃えるゴミの日です。ゴミ出しをお願いします。
+```
+
+通知が不要であればschedulesは記述しなくてよいです。
+
+以下の記述では、掃除機は個別の通知は行われません。
+
+```yaml
+name: 掃除機
+order: [10]
 ```
