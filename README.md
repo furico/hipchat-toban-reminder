@@ -23,3 +23,18 @@ $ python reminder.py
 ### Herokuでの運用方法
 
 設定ファイルを記述して、gitリポジトリに追加し、Herokuにpushすれば使えます。
+
+## 設定ファイル
+
+config配下に以下のファイルを用意します。
+既にサンプルファイルが入っているのでそれをリネームすればひな形として使えます。
+
+* hipchat.yml
+* members.yml
+* tasks.yml
+
+### hipchat.yml
+
+### members.yml
+
+### tasks.yml
