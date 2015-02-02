@@ -23,5 +23,9 @@ class ReminderTestCase(unittest.TestCase):
         result = reminder.arrange_list(ls, index)
         self.assertEqual([5, 1, 2, 3, 4], result)
 
+    def test_get_all_assignment_list(self):
+        # TODO
+        pass
+
 if __name__ == '__main__':
     unittest.main()
