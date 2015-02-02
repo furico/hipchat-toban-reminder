@@ -27,6 +27,7 @@ $ python reminder.py
 ## 設定ファイル
 
 config配下に以下のファイルを用意します。
+
 既にサンプルファイルが入っているのでそれをリネームすればひな形として使えます。
 
 * hipchat.yml
@@ -34,6 +35,18 @@ config配下に以下のファイルを用意します。
 * tasks.yml
 
 ### hipchat.yml
+
+HipChatの情報を記述します。
+
+アクセストークンと通知を送るルームIDを記述します。
+
+```yaml
+---
+ACCESS_TOKEN: <access_token>
+ROOM_ID: <room_id>
+```
+
+アクセストークは[ここ](https://www.hipchat.com/account/api)で入手します。
 
 ### members.yml
 
