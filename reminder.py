@@ -5,6 +5,7 @@ HipChatRoom 当番リマインダー
 HipChat に当番のリマインダーを通知する。
 """
 
+import os
 import json
 import yaml
 from datetime import date
@@ -152,18 +153,13 @@ def create_all_notification_message():
     return '<br>'.join(msg)
 
 
-def create_all_notification_job(hipchat_yml=DEFAULT_CONFIG['hipchat_yml']):
+def create_all_notification_job(hipchat_room):
     """全体通知用のジョブを作成する。
 
-    :param hipchat_yml: HipChat設定ファイルのパス
+    :param hipchat_room: HipChatRoomオブジェクト
     """
     def all_notification_job():
         msg = create_all_notification_message()
-        hipchat_config = load_yaml(hipchat_yml)
-        hipchat_room = HipChatRoom(
-            hipchat_config['ACCESS_TOKEN'],
-            hipchat_config['ROOM_ID']
-        )
         hipchat_room.send_notification(msg)
 
     return all_notification_job
@@ -192,19 +188,13 @@ def create_notification_message(name, message):
     return '<br>'.join(msg)
 
 
-def create_timed_job(name, message, hipchat_yml=DEFAULT_CONFIG['hipchat_yml']):
+def create_timed_job(name, message, hipchat_room):
     """個別タスク通知用のジョブを作成する。
 
     :param name: タスク名
     :param message: メッセージ
-    :param hipchat_yml: HipChat設定ファイルのパス
+    :param hipchat_room: HipChatRoomオブジェクト
     """
-    hipchat_config = load_yaml(hipchat_yml)
-    hipchat_room = HipChatRoom(
-        hipchat_config['ACCESS_TOKEN'],
-        hipchat_config['ROOM_ID']
-    )
-
     def timed_job():
         msg = create_notification_message(name, message)
         hipchat_room.send_notification(msg)
@@ -213,19 +203,40 @@ def create_timed_job(name, message, hipchat_yml=DEFAULT_CONFIG['hipchat_yml']):
 
 
 if __name__ == '__main__':
-    sched = BlockingScheduler()
+    # HipChatへの接続設定
+    hipchat_access_token = os.getenv('HIPCHAT_ACCESS_TOKEN')
+    hipchat_room_id = os.getenv('HIPCHAT_ROOM_ID')
 
+    if hipchat_access_token is None:
+        hipchat_config = load_yaml(DEFAULT_CONFIG['hipchat_yml'])
+        hipchat_access_token = hipchat_config['ACCESS_TOKEN']
+
+    if hipchat_room_id is None:
+        hipchat_config = load_yaml(DEFAULT_CONFIG['hipchat_yml'])
+        hipchat_room_id = hipchat_config['ROOM_ID']
+
+    hipchat_room = HipChatRoom(
+        hipchat_access_token,
+        hipchat_room_id
+    )
+
+    sched = BlockingScheduler()
     task_list = load_yaml(DEFAULT_CONFIG['tasks_yml'])
 
+    # 全体通知用のジョブを追加
     sched.add_job(
-        create_all_notification_job(),
+        create_all_notification_job(hipchat_room),
         **task_list['all']['schedule']
     )
 
+    # 個別タスク通知用のジョブを追加
     for task in task_list['tasks']:
         if 'schedules' in task:
             for schedule in task['schedules']:
-                func = create_timed_job(task['name'], schedule['message'])
+                func = create_timed_job(
+                    task['name'],
+                    schedule['message'],
+                    hipchat_room)
                 sched.add_job(func, **schedule['schedule'])
 
     sched.start()
