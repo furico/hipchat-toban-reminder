@@ -50,6 +50,22 @@ ROOM_ID: <room_id>
 
 アクセストークは[ここ](https://www.hipchat.com/account/api)で入手します。
 
+#### 環境変数を使用する場合
+
+以下の環境変数が設定されている場合、hipchat.ymlは不要です。
+
+```
+$ export HIPCHAT_ACCESS_TOKEN=<access_token>
+$ export HIPCHAT_ROOM_ID=<room_id>
+```
+
+Herokuの場合は以下のように設定出来ます。
+
+```
+heroku config:set HIPCHAT_ACCESS_TOKEN=<access_token>
+heroku config:set HIPCHAT_ROOM_ID=<room_id>
+```
+
 ### members.yml
 
 当番を割り当てるメンバーのリストです。
