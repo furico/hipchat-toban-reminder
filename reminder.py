@@ -150,7 +150,7 @@ def create_all_notification_message():
 
         msg.append('')
 
-    return '<br>'.join(msg)
+    return '\n'.join(msg)
 
 
 def create_all_notification_job(hipchat_room):
@@ -160,7 +160,7 @@ def create_all_notification_job(hipchat_room):
     """
     def all_notification_job():
         msg = create_all_notification_message()
-        hipchat_room.send_notification(msg)
+        hipchat_room.send_notification(msg, message_format='text')
 
     return all_notification_job
 
@@ -185,7 +185,7 @@ def create_notification_message(name, message):
     for member in target_assignment.members:
         msg.append(add_atmark(member))
 
-    return '<br>'.join(msg)
+    return '\n'.join(msg)
 
 
 def create_timed_job(name, message, hipchat_room):
@@ -197,7 +197,7 @@ def create_timed_job(name, message, hipchat_room):
     """
     def timed_job():
         msg = create_notification_message(name, message)
-        hipchat_room.send_notification(msg)
+        hipchat_room.send_notification(msg, message_format='text')
 
     return timed_job
 
