@@ -98,7 +98,8 @@ def arrange_list(ls, index):
 
 def get_all_assignment_list(
         tasks_yml=DEFAULT_CONFIG['tasks_yml'],
-        members_yml=DEFAULT_CONFIG['members_yml']):
+        members_yml=DEFAULT_CONFIG['members_yml'],
+        date_today=date.today()):
     """当番を割り当てたリストを取得する。
     タスクリストとメンバーリストを読み込む。
     タスクリストのorderと現在日付が１年の何週目かに応じて、
@@ -121,7 +122,7 @@ def get_all_assignment_list(
     assignment_order_list = \
         sorted(assignment_order_list, key=itemgetter('order'))
 
-    iso_week = date.today().isocalendar()[1]
+    iso_week = date_today.isocalendar()[1]
     mod = iso_week % len(assignment_order_list)
     assignment_order_list = arrange_list(assignment_order_list, mod)
 
