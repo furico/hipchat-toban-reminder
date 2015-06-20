@@ -107,6 +107,7 @@ def get_all_assignment_list(
 
     :param tasks_yml: タスク設定ファイルのパス
     :param members_yml: メンバー設定ファイルのパス
+    :param date_today: 割り当てに使用する日付
     """
     task_list = load_yaml(tasks_yml)
     assignment_list = []
