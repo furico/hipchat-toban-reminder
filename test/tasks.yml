@@ -1,0 +1,17 @@
+---
+tasks:
+  -
+    name: 燃えるゴミ
+    order: [50, 90]
+  -
+    name: 資源ゴミ
+    order: [30, 60, 80]
+  -
+    name: 掃除機
+    order: [10]
+  -
+    name: シュレッダー
+    order: [20]
+  -
+    name: 当番なし
+    order: [40, 70]

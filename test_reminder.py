@@ -2,6 +2,13 @@
 
 import unittest
 import reminder
+from datetime import date
+
+TEST_CONFIG = {
+    'tasks_yml': 'test/tasks.yml',
+    'members_yml': 'test/members.yml',
+    'date_today': date(2015, 6, 1),
+}
 
 
 class ReminderTestCase(unittest.TestCase):
@@ -24,8 +31,27 @@ class ReminderTestCase(unittest.TestCase):
         self.assertEqual([5, 1, 2, 3, 4], result)
 
     def test_get_all_assignment_list(self):
-        # TODO
-        pass
+        result = reminder.get_all_assignment_list(
+            TEST_CONFIG['tasks_yml'],
+            TEST_CONFIG['members_yml'],
+            TEST_CONFIG['date_today'])
+
+        task_list = reminder.load_yaml(TEST_CONFIG['tasks_yml'])
+        member_list = reminder.load_yaml(TEST_CONFIG['members_yml'])
+
+        test_members = [
+            [member_list[3], member_list[8]],
+            [member_list[0], member_list[2], member_list[6]],
+            [member_list[4]],
+            [member_list[5]],
+            [member_list[1], member_list[7]],
+        ]
+
+        self.assertEqual(len(task_list['tasks']), len(result))
+
+        for i, assignment in enumerate(result):
+            self.assertEqual(task_list['tasks'][i]['name'], assignment.task)
+            self.assertEqual(test_members[i], assignment.members)
 
 if __name__ == '__main__':
     unittest.main()
